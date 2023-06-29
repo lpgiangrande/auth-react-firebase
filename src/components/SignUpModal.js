@@ -11,7 +11,7 @@ export default function SignUpModal() {
           >
             <div className="modal-dialog">
               <div className="modal-content">
-                <div className="header"></div>
+                <div className="modal-header"></div>
               </div>
             </div>
           </div>
