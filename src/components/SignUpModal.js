@@ -9,7 +9,10 @@ export default function SignUpModal() {
     <>
       {modalState.signUpModal && (
         <div className="position-fixed top-0 vw-100 vh-100">
-          <div className="w-100 h-100 bg-dark bg-opacity-75">
+          <div
+            onClick={() => toggleModals("close")}
+            className="w-100 h-100 bg-dark bg-opacity-75"
+          >
             <div
               className="position-absolute top-50 start-50 translate-middle"
               style={{ minWidth: "400px" }}
@@ -19,7 +22,10 @@ export default function SignUpModal() {
                 <div className="modal-content">
                   <div className="modal-header">
                     <h5 className="modal-title">Sign up</h5>
-                    <button className="btn-close"></button>
+                    <button
+                      onClick={() => toggleModals("close")}
+                      className="btn-close"
+                    ></button>
                   </div>
                 </div>
                 {/* modal content */}
