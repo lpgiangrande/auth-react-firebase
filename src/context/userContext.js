@@ -6,7 +6,7 @@ export const UserContext = createContext();
 // Composant d'ordre supérieur - retourne UserContext data
 export function UserContextProvider(props) {
   const [modalState, setModalState] = useState({
-    signUpModal: true,
+    signUpModal: false,
     signInModal: false,
   });
 
