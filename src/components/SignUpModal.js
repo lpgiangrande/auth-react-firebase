@@ -2,8 +2,9 @@ import React, { useContext, useRef, useState } from "react";
 import { UserContext } from "../context/userContext";
 
 export default function SignUpModal() {
-  const { modalState, toggleModals } = useContext(UserContext);
+  const { modalState, toggleModals, signUp } = useContext(UserContext);
   //console.log(modalState, toggleModals);
+  //console.log(signUp);
 
   const [validation, setValidation] = useState("");
 
@@ -14,8 +15,9 @@ export default function SignUpModal() {
       inputs.current.push(el);
     }
   };
+  const formRef = useRef();
 
-  const handleForm = (e) => {
+  const handleForm = async (e) => {
     e.preventDefault();
     //console.log(inputs);
 
@@ -33,6 +35,16 @@ export default function SignUpModal() {
       setValidation("Passwords do not match");
       return;
     }
+    // 3. Inscription
+    try {
+      const cred = await signUp(
+        inputs.current[0].value,
+        inputs.current[1].value
+      );
+      formRef.current.reset(); // remets à 0 les inputs
+      setValidation("");
+      console.log(cred); // retourne l'user créé
+    } catch (err) {}
   };
 
   return (
@@ -52,7 +64,11 @@ export default function SignUpModal() {
                 </div>
 
                 <div className="modal-body">
-                  <form onSubmit={handleForm} className="sign-up-form">
+                  <form
+                    ref={formRef}
+                    onSubmit={handleForm}
+                    className="sign-up-form"
+                  >
                     <div className="mb-3">
                       <label htmlFor="signUpEmail" className="form-label">
                         Email adress
