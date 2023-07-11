@@ -12,11 +12,20 @@ export const UserContext = createContext();
 // Composant d'ordre supérieur - retourne UserContext data
 export function UserContextProvider(props) {
   // inscription user
+  const signUp = (email, pwd) =>
+    createUserWithEmailAndPassword(auth, email, pwd);
+
   const [currentUser, setCurrentUser] = useState();
   const [loadingData, setLoadingData] = useState(true);
 
-  const signUp = (email, pwd) =>
-    createUserWithEmailAndPassword(auth, email, pwd);
+  // écouter les changements d'état d'authentification de l'utilisateur avec onAuthStateChanged(firebase, CB)
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+      setCurrentUser(currentUser);
+      setLoadingData(false);
+    });
+    return unsubscribe;
+  }, []);
 
   // modal
   const [modalState, setModalState] = useState({
@@ -46,8 +55,10 @@ export function UserContextProvider(props) {
   };
 
   return (
-    <UserContext.Provider value={{ modalState, toggleModals, signUp }}>
-      {props.children}
+    <UserContext.Provider
+      value={{ modalState, toggleModals, signUp, currentUser }}
+    >
+      {!loadingData && props.children}
     </UserContext.Provider>
   );
 }

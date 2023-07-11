@@ -1,10 +1,12 @@
 import React, { useContext, useRef, useState } from "react";
 import { UserContext } from "../context/userContext";
+import { useNavigate } from "react-router-dom";
 
 export default function SignUpModal() {
   const { modalState, toggleModals, signUp } = useContext(UserContext);
   //console.log(modalState, toggleModals);
   //console.log(signUp);
+  const navigate = useNavigate();
 
   const [validation, setValidation] = useState("");
 
@@ -43,7 +45,9 @@ export default function SignUpModal() {
       );
       formRef.current.reset(); // remets à 0 les inputs
       setValidation("");
-      console.log(cred); // retourne l'user créé
+      // console.log(cred); // retourne l'user créé
+      toggleModals("close");
+      navigate("/private/private-home");
     } catch (err) {
       //console.dir(err);
       /* gestion erreurs et ajustement du message d'erreur avec codes firebase */
