@@ -44,14 +44,32 @@ export default function SignUpModal() {
       formRef.current.reset(); // remets à 0 les inputs
       setValidation("");
       console.log(cred); // retourne l'user créé
-    } catch (err) {}
+    } catch (err) {
+      //console.dir(err);
+      /* gestion erreurs et ajustement du message d'erreur avec codes firebase */
+      if (err.code === "auth/invalid-email") {
+        setValidation("invalid email format");
+      }
+      if (err.code === "auth/email-already-in-use") {
+        setValidation("email already used");
+      }
+    }
+  };
+
+  // Fonction pour supprimer le message de validation après fermeture de modal, sinon il persiste
+  const closeModal = () => {
+    setValidation("");
+    toggleModals("close");
   };
 
   return (
     <>
       {modalState.signUpModal && (
         <div className="position-fixed top-0 vw-100 vh-100">
-          <div className="w-100 h-100 bg-dark bg-opacity-75"></div>
+          <div
+            onClick={closeModal}
+            className="w-100 h-100 bg-dark bg-opacity-75"
+          ></div>
           <div
             className="position-absolute top-50 start-50 translate-middle"
             style={{ minWidth: "400px" }}
@@ -60,7 +78,7 @@ export default function SignUpModal() {
               <div className="modal-content">
                 <div className="modal-header">
                   <h5 className="modal-title">Sign Up</h5>
-                  <button className="btn-close"></button>
+                  <button onClick={closeModal} className="btn-close"></button>
                 </div>
 
                 <div className="modal-body">
