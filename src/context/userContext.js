@@ -11,9 +11,11 @@ export const UserContext = createContext();
 
 // Composant d'ordre supérieur - retourne UserContext data
 export function UserContextProvider(props) {
-  // inscription user
+  // sign up user
   const signUp = (email, pwd) =>
     createUserWithEmailAndPassword(auth, email, pwd);
+  // sign in user
+  const signIn = (email, pwd) => signInWithEmailAndPassword(auth, email, pwd);
 
   const [currentUser, setCurrentUser] = useState();
   const [loadingData, setLoadingData] = useState(true);
@@ -56,9 +58,23 @@ export function UserContextProvider(props) {
 
   return (
     <UserContext.Provider
-      value={{ modalState, toggleModals, signUp, currentUser }}
+      value={{ modalState, toggleModals, signUp, currentUser, signIn }}
     >
       {!loadingData && props.children}
     </UserContext.Provider>
   );
 }
+
+/* 
+Explications useEffect - loading data
+
+useEffect (hook) va exécuter fonction CB toutes les x fois
+-> mettre un [] va se lancer seulement une fois après la 1ere création d'un composant
+
+setLoadingData empêche de logger avant d'avoir récupérer les données de l'user
+On le met sur false quand on a récupérer ses données 
+
+Une fois les données récupérées, 
+{!loadingData && props.children}
+on envoie à l'application
+*/
